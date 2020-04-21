@@ -1,21 +1,26 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_beautiful_popup/main.dart';
 import 'package:line_up/constants.dart';
+import 'package:line_up/screens/login_screen.dart';
 import 'package:quotes/quotes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 bool checkMark = false;
 String input = '';
 int todosSize;
+UserDetails userGlobal;
 
 class MainScreen extends StatefulWidget {
+  MainScreen({this.user});
+  final UserDetails user;
   @override
   _MainScreenState createState() => _MainScreenState();
 }
 
 createToDos() {
   DocumentReference documentReference =
-      Firestore.instance.collection("MyToDos").document(input);
+      Firestore.instance.collection("${userGlobal.userEmail}").document(input);
 
   //map
   Map<String, String> todos = {
@@ -26,7 +31,7 @@ createToDos() {
 
 deleteToDos(item) {
   DocumentReference documentReference =
-      Firestore.instance.collection("MyToDos").document(item);
+      Firestore.instance.collection("${userGlobal.userEmail}").document(item);
   documentReference.delete().whenComplete(() => print("deleted"));
 }
 
@@ -37,55 +42,66 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     todosSize = todos.length + 1;
+    userGlobal = widget.user;
+    Firestore.instance
+        .collection('${userGlobal.userEmail}')
+        .document('default')
+        .setData({'todosTitle': 'Add your todo here'});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomPadding: false,
-        bottomNavigationBar: buildCurvedNavigationBar((value) {
-          final popup = BeautifulPopup(
-            context: context,
-            template: TemplateThumb,
-          );
-          popup.show(
-            title: 'Add Todo',
-            content: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextField(
-                  style: TextStyle(color: Colors.white, fontSize: 18),
-                  decoration: buildInputDecoration(),
-                  onChanged: (value) => input = value,
+        bottomNavigationBar: buildCurvedNavigationBar(
+          (value) {
+            if (value == 2) {
+              Navigator.pop(context);
+            } else if (value == 1) {
+              final popup = BeautifulPopup(
+                context: context,
+                template: TemplateThumb,
+              );
+              popup.show(
+                title: 'Add Todo',
+                content: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextField(
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                      decoration: buildInputDecoration(),
+                      onChanged: (value) => input = value,
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      Quotes.getRandom().getContent(),
+                      style: TextStyle(color: Colors.white, fontSize: 22),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  Quotes.getRandom().getContent(),
-                  style: TextStyle(color: Colors.white, fontSize: 22),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-            actions: [
-              popup.button(
-                  label: 'Add',
-                  onPressed: () {
-                    setState(() {
-                      createToDos();
-                    });
-                    Navigator.pop(context);
-                  }),
-              popup.button(
-                label: 'Close',
-                onPressed: Navigator.of(context).pop,
-              ),
-            ],
-            // bool barrierDismissible = false,
-            // Widget close,
-          );
-        }),
+                actions: [
+                  popup.button(
+                      label: 'Add',
+                      onPressed: () {
+                        setState(() {
+                          createToDos();
+                        });
+                        Navigator.pop(context);
+                      }),
+                  popup.button(
+                    label: 'Close',
+                    onPressed: Navigator.of(context).pop,
+                  ),
+                ],
+                // bool barrierDismissible = false,
+                // Widget close,
+              );
+            }
+          },
+        ),
         backgroundColor: Color(kRedAccentCostum),
         appBar: AppBar(
           title: Title(
@@ -95,7 +111,9 @@ class _MainScreenState extends State<MainScreen> {
           backgroundColor: Colors.redAccent.shade400,
         ),
         body: StreamBuilder(
-          stream: Firestore.instance.collection('MyToDos').snapshots(),
+          stream: Firestore.instance
+              .collection('${userGlobal.userEmail}')
+              .snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             return SingleChildScrollView(
@@ -105,7 +123,7 @@ class _MainScreenState extends State<MainScreen> {
                     padding: EdgeInsets.all(10),
                     child: ListTile(
                       title: Text(
-                        'Juzo Susumiya',
+                        '${userGlobal.userName}',
                         textAlign: TextAlign.start,
                         style: TextStyle(
                             fontSize: 25.0,
@@ -118,8 +136,7 @@ class _MainScreenState extends State<MainScreen> {
                       ),
                       leading: CircleAvatar(
                         radius: 15,
-                        backgroundImage: NetworkImage(
-                            'https://cdn4.vectorstock.com/i/1000x1000/64/83/web-developer-avatar-vector-25996483.jpg'),
+                        backgroundImage: NetworkImage('${userGlobal.photoUrl}'),
                       ),
                     ),
                   ),
@@ -130,18 +147,14 @@ class _MainScreenState extends State<MainScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ListTile(
-                              leading: Text(
-                                'Today\'s Goal',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              trailing: Text(
-                                '$todosSize',
-                                style: TextStyle(
-                                    color: Color(kRedDark), fontSize: 30),
-                              )),
+                            leading: Text(
+                              'Today\'s Goal',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
                           //creating list view
                           Container(
                             height: MediaQuery.of(context).size.height * 0.60,
@@ -168,7 +181,7 @@ class _MainScreenState extends State<MainScreen> {
                                               content:
                                                   Text("$todos dismissed")));
                                     },
-                                    key: Key(index.toString()),
+                                    key: UniqueKey(),
                                     child: Container(
                                       height: 55,
                                       child: Card(

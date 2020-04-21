@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:line_up/screens/login_screen.dart';
 import 'package:line_up/screens/main_screen.dart';
 import 'package:line_up/screens/menu.dart';
 
@@ -25,7 +26,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     var myDrawer = Menu();
-    var myChild = MainScreen();
+    var myChild = LoginScreen();
     return GestureDetector(
       onHorizontalDragStart: (details) {
         print("details = ${details.globalPosition.dx}");
