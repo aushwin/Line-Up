@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_beautiful_popup/main.dart';
 import 'package:line_up/constants.dart';
+import 'package:quotes/quotes.dart';
 
 bool checkMark = false;
 
@@ -35,27 +36,15 @@ class _MainScreenState extends State<MainScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextField(
-                decoration: InputDecoration(
-                  hintText: 'add ToDo Here',
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    borderSide: BorderSide(
-                      color: Colors.red.shade900,
-                    ),
-                  ),
-                  prefixIcon: Icon(Icons.check),
-                  filled: true,
-                  fillColor: Colors.redAccent,
-                ),
+                decoration: buildInputDecoration(),
               ),
               SizedBox(
-                height: 40,
+                height: 20,
+              ),
+              Text(
+                Quotes.getRandom().getContent(),
+                style: TextStyle(color: Colors.white, fontSize: 22),
+                textAlign: TextAlign.center,
               ),
             ],
           ),

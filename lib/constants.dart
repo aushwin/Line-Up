@@ -20,3 +20,25 @@ CurvedNavigationBar buildCurvedNavigationBar(Function onPressed) {
         milliseconds: 100,
       ));
 }
+
+//Textfield decoration
+InputDecoration buildInputDecoration() {
+  return InputDecoration(
+    hintText: 'add ToDo Here',
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(20)),
+      borderSide: BorderSide(
+        color: Colors.transparent,
+      ),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(20)),
+      borderSide: BorderSide(
+        color: Colors.red.shade900,
+      ),
+    ),
+    prefixIcon: Icon(Icons.check),
+    filled: true,
+    fillColor: Colors.redAccent,
+  );
+}
