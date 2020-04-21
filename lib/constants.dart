@@ -17,7 +17,7 @@ CurvedNavigationBar buildCurvedNavigationBar(Function onPressed) {
       height: 50,
       onTap: onPressed,
       animationDuration: Duration(
-        milliseconds: 100,
+        milliseconds: 600,
       ));
 }
 
