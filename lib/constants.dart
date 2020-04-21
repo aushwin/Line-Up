@@ -6,7 +6,7 @@ const kRedAccentCostum = 0xffFE3C52;
 const kRedDark = 0xffE82B41;
 
 //navBar
-CurvedNavigationBar buildCurvedNavigationBar() {
+CurvedNavigationBar buildCurvedNavigationBar(Function onPressed) {
   return CurvedNavigationBar(
       items: [
         Icon(Icons.list, size: 30),
@@ -15,8 +15,8 @@ CurvedNavigationBar buildCurvedNavigationBar() {
       ],
       backgroundColor: Color(kRedAccentCostum),
       height: 50,
-      onTap: (value) => print(value),
+      onTap: onPressed,
       animationDuration: Duration(
-        milliseconds: 300,
+        milliseconds: 100,
       ));
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_beautiful_popup/main.dart';
 import 'package:line_up/constants.dart';
 
 bool checkMark = false;
@@ -23,7 +24,52 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: buildCurvedNavigationBar(),
+      bottomNavigationBar: buildCurvedNavigationBar((value) {
+        final popup = BeautifulPopup(
+          context: context,
+          template: TemplateThumb,
+        );
+        popup.show(
+          title: 'Add Todo',
+          content: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'add ToDo Here',
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    borderSide: BorderSide(
+                      color: Colors.transparent,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    borderSide: BorderSide(
+                      color: Colors.red.shade900,
+                    ),
+                  ),
+                  prefixIcon: Icon(Icons.check),
+                  filled: true,
+                  fillColor: Colors.redAccent,
+                ),
+              ),
+              SizedBox(
+                height: 40,
+              ),
+            ],
+          ),
+          actions: [
+            popup.button(label: 'Add', onPressed: () {}),
+            popup.button(
+              label: 'Close',
+              onPressed: Navigator.of(context).pop,
+            ),
+          ],
+          // bool barrierDismissible = false,
+          // Widget close,
+        );
+      }),
       backgroundColor: Color(kRedAccentCostum),
       appBar: AppBar(
         title: Title(
