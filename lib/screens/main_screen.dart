@@ -5,6 +5,7 @@ import 'package:quotes/quotes.dart';
 
 bool checkMark = false;
 String input = '';
+int todosSize;
 
 class MainScreen extends StatefulWidget {
   @override
@@ -17,6 +18,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
+    todosSize = todos.length + 1;
   }
 
   @override
@@ -54,6 +56,7 @@ class _MainScreenState extends State<MainScreen> {
                 onPressed: () {
                   setState(() {
                     todos.add(input);
+                    todosSize = todos.length;
                   });
                   Navigator.pop(context);
                 }),
@@ -114,7 +117,7 @@ class _MainScreenState extends State<MainScreen> {
                               fontWeight: FontWeight.bold),
                         ),
                         trailing: Text(
-                          '${todos.length}',
+                          '$todosSize',
                           style:
                               TextStyle(color: Color(kRedDark), fontSize: 30),
                         )),
@@ -129,6 +132,14 @@ class _MainScreenState extends State<MainScreen> {
                           itemCount: todos.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Dismissible(
+                              onDismissed: (direction) {
+                                setState(() {
+                                  todos.remove(todos[index]);
+                                  todosSize = todos.length;
+                                });
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                    content: Text("$todos dismissed")));
+                              },
                               key: Key(todos[index]),
                               child: Container(
                                 height: 55,

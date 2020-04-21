@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "875391074111",
+    "firebase_url": "https://line-up-5f718.firebaseio.com",
+    "project_id": "line-up-5f718",
+    "storage_bucket": "line-up-5f718.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:875391074111:android:34889b43a78c0222229d8a",
+        "android_client_info": {
+          "package_name": "com.example.line_up"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "875391074111-6st66supd88qh460t94nb5kb5afkg35d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZB30vb1PFlSFYkNdRAsiUXLcSF0ZUde0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "875391074111-6st66supd88qh460t94nb5kb5afkg35d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
