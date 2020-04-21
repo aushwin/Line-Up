@@ -23,6 +23,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: buildCurvedNavigationBar(),
       backgroundColor: Color(kRedAccentCostum),
       appBar: AppBar(
         title: Title(
